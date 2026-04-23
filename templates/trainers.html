@@ -46,7 +46,7 @@
 
       <article class="trainer{{ ' trainer--reverse' if loop.index is even else '' }}">
         <div class="trainer__media">
-          <img class="trainer__photo" src="{{ t.photo or url_for('static', filename='images/trainer.svg') }}" alt="{{ _(t.name) }}">
+          <img class="trainer__photo{{ ' trainer__photo--karolina' if slug == 'voronova' else '' }}" src="{{ t.photo or url_for('static', filename='images/trainer.svg') }}" alt="{{ _(t.name) }}">
         </div>
         <div class="trainer__content">
           <h2 class="trainer__name">{{ _(t.name) }}</h2>
@@ -55,10 +55,10 @@
             <div class="trainer__role">{{ role }}</div>
           {% endif %}
 
-          {# Список ключевых фактов (максимум 4) #}
+          {# Список ключевых фактов #}
           <div class="trainer__facts">
             <ul>
-              {% for item in facts[:4] %}
+              {% for item in facts %}
                 <li>{{ item }}</li>
               {% endfor %}
             </ul>

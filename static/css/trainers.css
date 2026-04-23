@@ -39,6 +39,10 @@
   filter: grayscale(100%);
 }
 
+.trainer__photo--karolina {
+  object-position: center 0%;
+}
+
 .trainer__content {
   flex: 1 1 auto;
   display: flex;

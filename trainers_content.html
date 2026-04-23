@@ -1,0 +1,482 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тренеры</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="/static/css/style.css">
+  <meta name="csrf-token" content="ImY4NWVhOTE5ODg1MzNhMDNmMzgwMDM5YjQ0YTQ3ZDY1YmI2NzllMDUi.aenVqw.OSk_c7Avy_GZfj_3NYHnR-TdhDM">
+  <script defer src="/static/js/main.js"></script>
+  <script>
+    // Global fetch wrapper to attach CSRF token to non-GET requests
+    (function(){
+      try{
+        var tag = document.querySelector('meta[name="csrf-token"]');
+        var token = tag ? tag.getAttribute('content') : null;
+        if(!token) return;
+        var originalFetch = window.fetch;
+        window.fetch = function(input, init){
+          init = init || {};
+          var method = (init.method || 'GET').toUpperCase();
+          if (method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS'){
+            var hdrs = init.headers || {};
+            try{
+              // If Headers object, clone to set new header
+              if (typeof Headers !== 'undefined' && hdrs instanceof Headers){
+                var h2 = new Headers(hdrs);
+                if (!h2.has('X-CSRFToken')) h2.set('X-CSRFToken', token);
+                init.headers = h2;
+              } else {
+                if (!('X-CSRFToken' in hdrs)) hdrs['X-CSRFToken'] = token;
+                init.headers = hdrs;
+              }
+            }catch(e){ /* noop */ }
+          }
+          return originalFetch(input, init);
+        };
+      }catch(e){ /* noop */ }
+    })();
+  </script>
+  
+<link rel="stylesheet" href="/static/css/trainers.css">
+
+  <style>
+    /* Mobile-only override: slightly narrower side drawer */
+    @media (max-width: 640px) {
+      #nav.nav { width: 72vw; max-width: 280px; }
+      /* hide auth/login button on mobile */
+      .header-actions .btn { display: none !important; }
+    }
+    /* Overlay default: hidden; enable only when menu is open */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      -webkit-backdrop-filter: saturate(120%) blur(1px);
+      backdrop-filter: saturate(120%) blur(1px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+      z-index: 150;
+    }
+    body.menu-open .nav-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    /* improve spacing in right header area */
+    .header-actions { gap: 16px; }
+    .auth-ctrls { display:flex; align-items:center; gap: 14px; }
+    .lang-switch { margin-right: 6px; }
+    /* header user avatar */
+    .header-actions .user-avatar {
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #ddd; background: #1a1a1a; border: 1px solid #333; border-radius: 50%;
+      transition: border-color .2s ease, color .2s ease, background .2s ease;
+      vertical-align: middle;
+    }
+    .header-actions .user-avatar:hover { border-color: var(--accent); color: #fff; background: #222; }
+    @media (min-width: 641px){
+      .header-actions{ justify-self: end; }
+      .header .nav{ justify-self: center; }
+    }
+  /* Footer legal (links first line, copyright second line) */
+  .footer-legal {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 18px 0 25px;
+    font-size: 13px;
+    color: #9ca3af;
+    text-align: center;
+  }
+  .footer-legal__inner { display: flex; flex-direction: column; gap: 8px; }
+  .footer-legal__links { display:flex; justify-content:center; flex-wrap:wrap; gap: 6px 12px; }
+  .footer-legal__links a { color:#d1d5db; text-decoration:none; }
+  .footer-legal__links a:hover { text-decoration: underline; }
+  .footer-legal__copy { margin-top: 4px; opacity: 0.8; }
+  @media (min-width: 900px) {
+    .footer-legal__inner { align-items: center; }
+  }
+  </style>
+  <style>
+    /* Active nav link style */
+    .nav a.active { color: #ef4444 !important; }
+  </style>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon/favicon-16x16.png">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="manifest" href="/static/images/favicon/site.webmanifest">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Dynamic SEO -->
+    <title>Тренеры — Wiru Combat Academy, Кохтла-Ярве</title>
+    <meta name="description" content="Профессиональные тренеры по боксу и ММА в Кохтла-Ярве. Опытные наставники, индивидуальный подход.">
+    <meta name="keywords" content="бокс Кохтла-Ярве, мма Кохтла-Ярве, спорт Кохтла-Ярве, тренировки, wiru combat academy">
+    <meta name="author" content="Wiru Combat Academy">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Тренерский состав Wiru Combat Academy, Кохтла-Ярве">
+    <meta property="og:description" content="Познакомьтесь с нашими тренерами и их опытом в единоборствах.">
+    <meta property="og:image" content="http://127.0.0.1:5000/static/images/og-image.jpg">
+    <meta property="og:url" content="http://127.0.0.1:5000/trainers">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Тренерский состав Wiru Combat Academy, Кохтла-Ярве">
+    <meta name="twitter:description" content="Познакомьтесь с нашими тренерами и их опытом в единоборствах.">
+    <meta name="twitter:image" content="http://127.0.0.1:5000/static/images/og-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://127.0.0.1:5000/trainers">
+</head>
+<body>
+<header class="header">
+  <div class="container header-inner">
+    <!-- Лого -->
+    <div class="logo">
+      <a href="/">
+        <img src="/static/images/logo_header.png" alt="Wiru Combat Academy Logo">
+      </a>
+    </div>
+
+    <nav id="nav" class="nav">
+      <div class="nav-header">
+        <a class="nav-logo" href="/">
+          <img src="/static/images/logo_header.png" alt="Wiru Combat Academy Logo">
+        </a>
+      </div>
+      <a href="/" class="">Главная</a>
+      <a href="/news" class="" style="display:none" aria-hidden="true" tabindex="-1">Новости</a>
+      <a href="/schedule" class="">Расписание</a>
+      <a href="/trainers" class="active">Тренеры</a>
+      <a href="/contact" class="">Контакты</a>
+                </nav>
+        <div class="header-actions">
+      <div class="lang-switch">
+        
+          <a class="lang active" href="/trainers?lang=ru">RU</a>
+        
+          <a class="lang " href="/trainers?lang=en">EN</a>
+        
+          <a class="lang " href="/trainers?lang=et">ET</a>
+        
+      </div>
+      <div class="auth-ctrls">
+        
+          <a class="btn" href="/login" style="display:none" aria-hidden="true" tabindex="-1">Войти</a>
+        
+      </div>
+      <button class="burger" aria-label="Menu" onclick="toggleMenu()">☰</button>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  
+    
+  
+  
+
+
+
+
+
+<section class="container pad-y trainers-section">
+  <h1 class="trainers-title">Тренеры</h1>
+
+  <div class="trainers-list">
+    
+      
+      
+      
+
+      
+      
+      
+      
+
+      <article class="trainer">
+        <div class="trainer__media">
+          <img class="trainer__photo" src="/static/images/kirillserikov.jpg" alt="Кирилл Сериков">
+        </div>
+        <div class="trainer__content">
+          <h2 class="trainer__name">Кирилл Сериков</h2>
+
+          
+            <div class="trainer__role">Бокс и общая физическая подготовка для молодёжи</div>
+          
+
+          
+          <div class="trainer__facts">
+            <ul>
+              
+                <li>10-кратный чемпион Эстонии по боксу</li>
+              
+                <li>Бронзовый призёр чемпионата Европы среди студентов</li>
+              
+                <li>16 лет в боксе</li>
+              
+            </ul>
+          </div>
+
+          
+          
+          <div class="trainer__phone">
+            <a href="tel:+37253306426">+372 5330 6426</a>
+          </div>
+          
+        </div>
+      </article>
+    
+      
+      
+      
+
+      
+      
+      
+      
+
+      <article class="trainer trainer--reverse">
+        <div class="trainer__media">
+          <img class="trainer__photo" src="/static/images/siimpark.png" alt="Сийм Пярк">
+        </div>
+        <div class="trainer__content">
+          <h2 class="trainer__name">Сийм Пярк</h2>
+
+          
+            <div class="trainer__role">Тренер по греко-римской борьбе и ММА</div>
+          
+
+          
+          <div class="trainer__facts">
+            <ul>
+              
+                <li>10+ лет тренировок в клубе Kalev</li>
+              
+                <li>Опыт тренировок в SBG Dublin (Ирландия)</li>
+              
+                <li>Опыт работы в Школе смешанных единоборств</li>
+              
+            </ul>
+          </div>
+
+          
+          
+          <div class="trainer__phone">
+            <a href="tel:+3725578012">+372 557 8012</a>
+          </div>
+          
+        </div>
+      </article>
+    
+      
+      
+      
+
+      
+      
+      
+      
+
+      <article class="trainer">
+        <div class="trainer__media">
+          <img class="trainer__photo" src="/static/images/karolinavoronova.jpg" alt="KAROLINA VORONOVA">
+        </div>
+        <div class="trainer__content">
+          <h2 class="trainer__name">KAROLINA VORONOVA</h2>
+
+          
+            <div class="trainer__role">Тренер по тайскому боксу !</div>
+          
+
+          
+          <div class="trainer__facts">
+            <ul>
+              
+                <li>ТОП-1 мирового рейтинга WAKO kickboxing 60 kg / K-1</li>
+              
+                <li>Чемпионка мира по кикбоксингу K-1 (Венгрия)</li>
+              
+                <li>Вице-чемпионка мира по тайскому боксу (Турция)</li>
+              
+                <li>Четырёхкратная чемпионка Кубка мира (Италия, Турция)</li>
+              
+                <li>Чемпионка Европы по кикбоксингу (Италия)</li>
+              
+                <li>Вице-чемпионка Европы по кикбоксингу K-1 (Италия)</li>
+              
+                <li>Третье место на чемпионате Европы по тайскому боксу (Турция)</li>
+              
+                <li>Профессиональная спортсменка</li>
+              
+            </ul>
+          </div>
+
+          
+          
+        </div>
+      </article>
+    
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Форма + Логотип -->
+    <div class="footer-top">
+      <div class="footer-form">
+        <h3>Напишите нам</h3>
+<form method="POST" action="/send-message">
+  <input type="hidden" name="csrf_token" value="ImY4NWVhOTE5ODg1MzNhMDNmMzgwMDM5YjQ0YTQ3ZDY1YmI2NzllMDUi.aenVqw.OSk_c7Avy_GZfj_3NYHnR-TdhDM">
+  <input type="text" name="website" value="" style="display:none !important; visibility:hidden; height:0; width:0; opacity:0;" tabindex="-1" autocomplete="off" aria-hidden="true">
+  
+  <div class="form-row two-cols">
+    <input type="text" name="name" placeholder="Ваше имя" required>
+    <input type="email" name="email" placeholder="Ваш Email" required>
+  </div>
+  <textarea name="message" placeholder="Ваше сообщение" rows="5" required></textarea>
+  <div class="form-row" style="margin: 10px 0 14px;">
+    <label for="consent" style="display:flex; align-items:center; gap:8px; color:#ccc; font-size:13px; line-height:1.4;">
+      <input id="consent" type="checkbox" name="consent" required>
+      <span>Согласен(а) на обработку <a href="/privacy" target="_blank">персональных</a> данных</span>
+    </label>
+  </div>
+  <button type="submit">Отправить</button>
+</form>
+
+      </div>
+
+      <!-- Логотип справа -->
+      <div class="footer-logo">
+        <img src="/static/images/logo.png" alt="Wiru Combat Academy Logo">
+      </div>
+    </div>
+
+    <!-- Карта + контакты -->
+    <div class="footer-bottom">
+      <div class="footer-map">
+        <div style="width:100%; height:400px;">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1925.701057225439!2d27.275484534636032!3d59.397257499382036!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x469471e0e775ef25%3A0xb0da126ff4f8ee0f!2sWiru%20Spordikeskus!5e0!3m2!1sru!2sus!4v1758046051065!5m2!1sru!2sus"
+    width="100%"
+    height="100%"
+    style="border:0; border-radius:8px;"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
+
+      </div>
+
+      <div class="footer-contacts">
+        <h3>Контакты</h3>
+        <p>Järveküla tee 41, Järve, 30321 <br>Ida-Viru maakond</p>
+        <p><a href="tel:+37256870131">+372 56870131</a></p>
+        <p><a href="mailto:wirucombatacademy@gmail.com">wirucombatacademy@gmail.com</a></p>
+        <h3>Банк</h3>
+        <p>MTÜ Wiru Combat Academy</p>
+        <p>EE974204278639060207</p>
+         <p class="footer-reg">WIRU COMBAT ACADEMY MTÜ • reg. 0655726</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/p/Wiru-Combat-Academy-61575157714278/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Закрываем основной футер с картой и контактами -->
+</footer>
+
+<!-- Нижняя строка: ссылки сверху, копирайт снизу; отдельный, не вложенный футер -->
+<footer class="footer-legal">
+  <div class="container footer-legal__inner">
+    <div class="footer-legal__links">
+      <a href="/privacy">Privaatsuspoliitika</a>
+      <span>•</span>
+      <a href="/terms">Kasutustingimused</a>
+      <span>•</span>
+      <a href="/cookies">Küpsiste poliitika</a>
+      <span>•</span>
+      <a href="/youth">Noorte ja lapsevanemate tingimused</a>
+      <span>•</span>
+      <a href="/marketing">Turundusnõusolek</a>
+    </div>
+
+    <div class="footer-legal__copy">
+      &copy; 2026 Wiru Combat Academy — Все права защищены
+    </div>
+  </div>
+</footer>
+
+
+<script src="/static/js/title-line.js"></script>
+<script>
+  // Client-side XSS guard for footer contact form
+  (function(){
+    function $(sel, root){ return (root || document).querySelector(sel); }
+    function createError(el, msg){
+      removeError(el);
+      var d = document.createElement('div');
+      d.className = 'error';
+      d.textContent = msg || 'Недопустимые символы';
+      d.style.marginTop = '6px';
+      el.setAttribute('aria-invalid','true');
+      el.classList.add('input-error');
+      if (el.parentNode) el.parentNode.appendChild(d);
+    }
+    function removeError(el){
+      el.removeAttribute('aria-invalid');
+      el.classList.remove('input-error');
+      var next = el.parentNode ? el.parentNode.querySelector('.error') : null;
+      if (next) next.parentNode.removeChild(next);
+    }
+
+    var form = document.querySelector('form[action="/send-message"]');
+    if (!form) return;
+
+    var nameEl = $('input[name="name"]', form);
+    var emailEl = $('input[name="email"]', form);
+    var msgEl = $('textarea[name="message"]', form);
+
+    // Detect common XSS payloads
+    var xssRe = /(javascript\s*:|on[a-z]+\s*=|<\s*(script|img|svg|iframe|object|embed)[^>]*|<\s*\/\s*script\s*>|<[a-z][^>]*>)/i;
+
+    function validateField(el){
+      if (!el) return true;
+      var v = (el.value || '').trim();
+      if (!v) { removeError(el); return true; }
+      if (xssRe.test(v)) { createError(el, 'Недопустимые символы'); return false; }
+      removeError(el); return true;
+    }
+
+    [nameEl, emailEl, msgEl].forEach(function(el){
+      if (!el) return;
+      el.addEventListener('input', function(){ validateField(el); });
+      el.addEventListener('blur', function(){ validateField(el); });
+    });
+
+    form.addEventListener('submit', function(evt){
+      var ok = true;
+      ok = validateField(nameEl) && ok;
+      ok = validateField(emailEl) && ok;
+      ok = validateField(msgEl) && ok;
+      if (!ok) {
+        evt.preventDefault();
+        try { (nameEl && nameEl.focus()) || (emailEl && emailEl.focus()) || (msgEl && msgEl.focus()); } catch(e) {}
+      }
+    });
+  })();
+</script>
+</body>
+</html>

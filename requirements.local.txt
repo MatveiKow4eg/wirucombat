@@ -1,0 +1,37 @@
+# Minimal, production-ready requirements for this Flask app
+Flask==3.1.2
+Werkzeug==3.1.3
+Jinja2==3.1.6
+itsdangerous==2.2.0
+click==8.3.0
+
+# i18n
+Flask-Babel==4.0.0
+Babel==2.17.0
+
+# Auth & forms
+Flask-Login==0.6.3
+Flask-WTF==1.2.2
+WTForms==3.2.1
+email-validator==2.2.0   # <– добавлено (обязательно!)
+
+# Database
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.43
+
+# Optional: Stripe integration (used conditionally in code)
+
+# Timezone data for some environments
+tzdata==2025.2
+
+# Production WSGI server
+gunicorn==23.0.0
+
+requests>=2.31.0
+bleach>=6.1.0
+Flask-Limiter>=3.8.0
+
+# Image processing for favicon and og-image generation
+Pillow  
+
+

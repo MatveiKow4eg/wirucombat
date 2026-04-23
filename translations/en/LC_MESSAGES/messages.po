@@ -258,6 +258,39 @@ msgstr "Confirm"
 msgid "Пока нет занятий"
 msgstr "No classes yet"
 
+msgid "Каролина Воронова"
+msgstr "Karolina Voronova"
+
+msgid "Тренер по тайскому боксу"
+msgstr "Muay Thai Coach"
+
+msgid "ТОП-1 мирового рейтинга WAKO kickboxing 60 kg / K-1"
+msgstr "World No. 1 in the WAKO kickboxing 60 kg / K-1 ranking"
+
+msgid "Чемпионка мира по кикбоксингу K-1 (Венгрия)"
+msgstr "K-1 Kickboxing World Champion (Hungary)"
+
+msgid "Вице-чемпионка мира по тайскому боксу (Турция)"
+msgstr "Muay Thai World Vice-Champion (Turkey)"
+
+msgid "Четырёхкратная чемпионка Кубка мира (Италия, Турция)"
+msgstr "Four-time World Cup Champion (Italy, Turkey)"
+
+msgid "Чемпионка Европы по кикбоксингу (Италия)"
+msgstr "European Kickboxing Champion (Italy)"
+
+msgid "Вице-чемпионка Европы по кикбоксингу K-1 (Италия)"
+msgstr "K-1 European Vice-Champion (Italy)"
+
+msgid "Третье место на чемпионате Европы по тайскому боксу (Турция)"
+msgstr "Third place at the European Muay Thai Championship (Turkey)"
+
+msgid "Профессиональная спортсменка"
+msgstr "Professional athlete"
+
+msgid "Тренер по тайскому боксу, многократная призёрка и чемпионка международных турниров по тайскому боксу и кикбоксингу K-1, номер один в мировом рейтинге WAKO (60 kg / K-1)."
+msgstr "Muay Thai coach, multiple international medalist and champion in Muay Thai and K-1 kickboxing tournaments, world No. 1 in the WAKO ranking (60 kg / K-1)."
+
 msgid "Добавьте первое занятие для этого дня"
 msgstr "Add the first class for this day"
 

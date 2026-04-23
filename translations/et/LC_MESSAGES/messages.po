@@ -260,6 +260,39 @@ msgstr "Tunde veel pole"
 msgid "Добавьте первое занятие для этого дня"
 msgstr "Lisa selle päeva esimene tund"
 
+msgid "Каролина Воронова"
+msgstr "Karolina Voronova"
+
+msgid "Тренер по тайскому боксу"
+msgstr "Tai poksi treener"
+
+msgid "ТОП-1 мирового рейтинга WAKO kickboxing 60 kg / K-1"
+msgstr "WAKO kickboxingu maailma edetabeli nr 1 (60 kg / K-1)"
+
+msgid "Чемпионка мира по кикбоксингу K-1 (Венгрия)"
+msgstr "K-1 kickboxingu maailmameister (Ungari)"
+
+msgid "Вице-чемпионка мира по тайскому боксу (Турция)"
+msgstr "Tai poksi maailmameistrivõistluste hõbe (Türgi)"
+
+msgid "Четырёхкратная чемпионка Кубка мира (Италия, Турция)"
+msgstr "Neljakordne maailmakarika võitja (Itaalia, Türgi)"
+
+msgid "Чемпионка Европы по кикбоксингу (Италия)"
+msgstr "Kickboxingu Euroopa meister (Itaalia)"
+
+msgid "Вице-чемпионка Европы по кикбоксингу K-1 (Италия)"
+msgstr "K-1 kickboxingu Euroopa asemeister (Itaalia)"
+
+msgid "Третье место на чемпионате Европы по тайскому боксу (Турция)"
+msgstr "Kolmas koht Tai poksi Euroopa meistrivõistlustel (Türgi)"
+
+msgid "Профессиональная спортсменка"
+msgstr "Professionaalne sportlane"
+
+msgid "Тренер по тайскому боксу, многократная призёрка и чемпионка международных турниров по тайскому боксу и кикбоксингу K-1, номер один в мировом рейтинге WAKO (60 kg / K-1)."
+msgstr "Tai poksi treener, mitmekordne rahvusvaheliste Tai poksi ja K-1 kickboxingu turniiride medalivõitja ja meister, WAKO maailma edetabeli nr 1 (60 kg / K-1)."
+
 msgid "Админ"
 msgstr "Admin"
 

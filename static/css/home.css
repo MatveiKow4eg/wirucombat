@@ -209,6 +209,15 @@ h1, .wc-title, .story-heading .story-word.main {
   font-weight: 800;
 }
 
+.schedule-subline {
+  margin-top: -4px;
+  margin-bottom: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .schedule-content .price {
   font-weight: bold;
   margin-bottom: 15px;
