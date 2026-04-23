@@ -409,6 +409,9 @@ msgstr "Tellimus aegub"
 msgid "дн."
 msgstr "p."
 
+msgid "лет"
+msgstr "a"
+
 msgid "Подписка"
 msgstr "Tellimus"
 

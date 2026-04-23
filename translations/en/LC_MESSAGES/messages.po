@@ -410,6 +410,9 @@ msgstr "Subscription expires in"
 msgid "дн."
 msgstr "days"
 
+msgid "лет"
+msgstr "years"
+
 msgid "Подписка"
 msgstr "Subscription"
 

@@ -161,6 +161,46 @@ def run_simple_migrations(app):
             app.logger.warning("User table migration skipped or failed. Consider using Alembic.")
 
 
+def get_static_schedule():
+    """Fallback schedule for deployments without database."""
+    return [
+        # Monday
+        {"day_of_week": 0, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 0, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 0, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 0, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 0, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
+
+        # Tuesday
+        {"day_of_week": 1, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 1, "time": "17:15", "discipline": "boxing", "age": "5–7 лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 1, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 1, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
+
+        # Wednesday
+        {"day_of_week": 2, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 2, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 2, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 2, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 2, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
+
+        # Thursday
+        {"day_of_week": 3, "time": "17:15", "discipline": "boxing", "age": "5–7 лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 3, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 3, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
+
+        # Friday
+        {"day_of_week": 4, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 4, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 4, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
+        {"day_of_week": 4, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
+        {"day_of_week": 4, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
+
+        # Saturday
+        {"day_of_week": 5, "time": "12:00", "discipline": "sparring", "age": "", "coach": ""},
+    ]
+
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -305,7 +345,7 @@ def create_app():
             ).all()
         else:
             news = []
-            schedule = []
+            schedule = get_static_schedule()
         return render_template(
             "home.html", news=news, schedule=schedule
         )
@@ -350,7 +390,7 @@ def create_app():
                 Schedule.day_of_week.asc(), Schedule.time.asc()
             ).all()
         else:
-            schedule = []
+            schedule = get_static_schedule()
         return render_template(
             "schedule.html", schedule=schedule, today=datetime.utcnow().weekday()
         )
@@ -521,7 +561,7 @@ def create_app():
     @app.route("/login", methods=["GET", "POST"])
     def login():
         if not db_enabled:
-            flash(_("Вход временно отключён: приложение запущено без базы данных."), "error")
+            flash(_("Вход временно отключён"), "error")
             return redirect(url_for("home"))
         if current_user.is_authenticated:
             return redirect(url_for("profile"))

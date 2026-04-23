@@ -111,63 +111,72 @@
           ] %}
         {% endif %}
 
-        {% set base_codes = ['E','T','K','N','R','L','P'] %}
         <div class="schedule-grid">
-          {% for d in days %}
-            {% set idx = loop.index0 %}
-            {% set items = (schedule | selectattr('day_of_week', 'equalto', idx) | list) | sort(attribute='time') %}
-            <div class="day-card">
-              <div class="day-head">
-                <div>
-                  <span class="day-code">{{ d.code }}</span>
-                  <span class="day-full">{{ d.full }}</span>
-                </div>
-                <span class="today-chip" data-day="{{ base_codes[idx] }}" hidden>{{ _('Сегодня') }}</span>
-              </div>
-              <div class="slots">
-                {% if items and items|length > 0 %}
-                  {% for it in items %}
-                    <div class="slot schedule-item"
-                         data-start="{{ it.time.split('-')[0].strip() }}"
-                         data-end="{{ it.time.split('-')[1].strip() if '-' in it.time else it.time }}">
-                      <span class="time-badge">{{ it.time }}</span>
-                      <span class="activity">
-                        {% if it.discipline == 'other' %}
-                          {# Явный перевод для Общеукрепляющих #}
-                          {% set act = (it.activity|string).strip() %}
-                          {% if act == 'Общеукрепляющие тренировки' or act == 'Общеукрепляющие' %}
-                            {{ _('Общеукрепляющие тренировки') }}
-                          {% else %}
-                            {{ it.activity }}
-                          {% endif %}
-                        {% else %}
-                          {% if it.discipline == 'boxing' %}{{ _('Бокс') }}{% elif it.discipline == 'wrestling' %}{{ _('Борьба') }}{% elif it.discipline == 'mma' %}{{ _('ММА') }}{% elif it.discipline == 'sparring' %}{{ _('Спарринг') }}{% else %}
-                            {# Фолбэк с переводом для неизвестных дисциплин #}
-                            {% set act = (it.activity|string).strip() %}
-                            {% if act == 'Общеукрепляющие тренировки' or act == 'Общеукрепляющие' %}
-                              {{ _('Общеукрепляющие тренировки') }}
-                            {% else %}
-                              {{ it.activity }}
-                            {% endif %}
-                          {% endif %}{% if it.age %} <span class="age-display" data-age="{{ it.age }}">{{ it.age }}</span>{% endif %}
-                        {% endif %}
-                        <span class="schedule-item__status"></span>
-                      </span>
-                      <span></span>
-                      <span class="coach-muted">{% if it.coach %}{{ _(it.coach) }}{% endif %}</span>
-                    </div>
-                  {% endfor %}
-                {% else %}
-                  <div class="slot">
-                    <span class="time-badge">—</span>
-                    <span class="coach-muted">{{ _('Нет занятий') }}</span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                {% endif %}
-              </div>
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[0].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">16:00</span><span class="activity">{{ _('ММА') }} 10–14</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">17:00</span><span class="activity">{{ _('Бокс') }} 8–11</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">18:00</span><span class="activity">{{ _('ММА') }} 15+</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">18:30</span><span class="activity">{{ _('Бокс') }} 12+</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">19:30</span><span class="activity">{{ _('Общеукрепляющие тренировки') }}</span><span></span><span class="coach-muted"></span></div>
             </div>
-          {% endfor %}
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[1].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">16:00</span><span class="activity">{{ _('ММА') }} 10–14</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">17:15</span><span class="activity">{{ _('Бокс') }} 5–7</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">18:00</span><span class="activity">{{ _('ММА') }} 15+</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">18:30</span><span class="activity">{{ _('Бокс') }} 12+</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+            </div>
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[2].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">16:00</span><span class="activity">{{ _('ММА') }} 10–14</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">17:00</span><span class="activity">{{ _('Бокс') }} 8–11</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">18:00</span><span class="activity">{{ _('ММА') }} 15+</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">18:30</span><span class="activity">{{ _('Бокс') }} 12+</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">19:30</span><span class="activity">{{ _('Общеукрепляющие тренировки') }}</span><span></span><span class="coach-muted"></span></div>
+            </div>
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[3].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">17:15</span><span class="activity">{{ _('Бокс') }} 5–7</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">18:00</span><span class="activity">{{ _('ММА') }} 15+</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">18:30</span><span class="activity">{{ _('Бокс') }} 12+</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+            </div>
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[4].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">16:00</span><span class="activity">{{ _('ММА') }} 10–14</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">17:00</span><span class="activity">{{ _('Бокс') }} 8–11</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">18:00</span><span class="activity">{{ _('ММА') }} 15+</span><span></span><span class="coach-muted">{{ _('Сийм Пярк') }}</span></div>
+              <div class="slot"><span class="time-badge">18:30</span><span class="activity">{{ _('Бокс') }} 12+</span><span></span><span class="coach-muted">{{ _('Кирилл Сериков') }}</span></div>
+              <div class="slot"><span class="time-badge">19:30</span><span class="activity">{{ _('Общеукрепляющие тренировки') }}</span><span></span><span class="coach-muted"></span></div>
+            </div>
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[5].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">12:00</span><span class="activity">{{ _('Спарринг') }}</span><span></span><span class="coach-muted"></span></div>
+            </div>
+          </div>
+
+          <div class="day-card">
+            <div class="day-head"><div><span class="day-code">{{ days[6].code }}</span></div></div>
+            <div class="slots">
+              <div class="slot"><span class="time-badge">—</span><span class="coach-muted">{{ _('Нет занятий') }}</span><span></span><span></span></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -280,20 +289,7 @@ async function createCheckout(price_id){
 }
 */
 
-// Mark today's day with the "Сегодня" chip
-(function(){
-  try{
-    const base = ['E','T','K','N','R','L','P']; // Mon..Sun
-    const code = base[(new Date().getDay() + 6) % 7]; // map JS 0..6 (Sun..Sat) to Mon..Sun index
-    document.querySelectorAll('.day-head .today-chip').forEach(el => {
-      if (el.getAttribute('data-day') === code) {
-        el.hidden = false;
-      } else {
-        el.remove();
-      }
-    });
-  }catch(e){ /* no-op */ }
-})();
+// Static schedule: chip "Сегодня" is written directly in Thursday card.
 
 // Tabs: sync with URL hash and toggle panels
 (function(){
