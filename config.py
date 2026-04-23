@@ -4,6 +4,9 @@ class Config:
     # Core Flask/DB
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
+    # DB switch (disabled by default so app can run in serverless read-only envs)
+    DATABASE_ENABLED = os.environ.get("DATABASE_ENABLED", "0") == "1"
+
     # Берём DATABASE_URL (если есть)
     _db_url = os.environ.get("DATABASE_URL")
 
@@ -11,8 +14,8 @@ class Config:
     if _db_url and _db_url.startswith("postgres://"):
         _db_url = _db_url.replace("postgres://", "postgresql://", 1)
 
-    # Если DATABASE_URL нет – падаем обратно на локальный SQLite
-    SQLALCHEMY_DATABASE_URI = _db_url or "sqlite:///sports_club.db"
+    # Safe URI for optional DB mode; in-memory sqlite avoids filesystem writes by default
+    SQLALCHEMY_DATABASE_URI = _db_url or "sqlite:///:memory:"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

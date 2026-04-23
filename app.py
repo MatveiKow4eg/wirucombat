@@ -164,6 +164,7 @@ def run_simple_migrations(app):
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    db_enabled = bool(app.config.get("DATABASE_ENABLED", False))
 
     # Стабильный SECRET_KEY
     app.config["SECRET_KEY"] = os.environ.get(
@@ -174,16 +175,19 @@ def create_app():
     # Compile translations on startup
     compile_translations(app)
 
-    # DB
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-        run_simple_migrations(app)
-        seed_if_empty()
-        try:
-            os.makedirs(app.config.get("UPLOAD_DIR", "./uploads"), exist_ok=True)
-        except Exception:
-            app.logger.warning("Unable to create upload directory")
+    # DB (optional)
+    if db_enabled:
+        db.init_app(app)
+        with app.app_context():
+            db.create_all()
+            run_simple_migrations(app)
+            seed_if_empty()
+            try:
+                os.makedirs(app.config.get("UPLOAD_DIR", "./uploads"), exist_ok=True)
+            except Exception:
+                app.logger.warning("Unable to create upload directory")
+    else:
+        app.logger.info("DATABASE_ENABLED=0: app is running without database")
 
     # Auth and CSRF
     login_manager = LoginManager(app)
@@ -191,6 +195,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
+        if not db_enabled:
+            return None
         return User.query.get(int(user_id))
 
     csrf = CSRFProtect(app)
@@ -292,10 +298,14 @@ def create_app():
 
     @app.route("/")
     def home():
-        news = News.query.order_by(News.created_at.desc()).limit(6).all()
-        schedule = Schedule.query.order_by(
-            Schedule.day_of_week.asc(), Schedule.time.asc()
-        ).all()
+        if db_enabled:
+            news = News.query.order_by(News.created_at.desc()).limit(6).all()
+            schedule = Schedule.query.order_by(
+                Schedule.day_of_week.asc(), Schedule.time.asc()
+            ).all()
+        else:
+            news = []
+            schedule = []
         return render_template(
             "home.html", news=news, schedule=schedule
         )
@@ -315,7 +325,7 @@ def create_app():
 
     @app.route("/news")
     def news_list():
-        news = News.query.order_by(News.created_at.desc()).all()
+        news = News.query.order_by(News.created_at.desc()).all() if db_enabled else []
         return render_template(
             "news.html",
             news=news,
@@ -327,14 +337,20 @@ def create_app():
 
     @app.route("/news/<int:news_id>")
     def news_detail(news_id):
+        if not db_enabled:
+            flash(_("Раздел новостей временно недоступен без базы данных."), "error")
+            return redirect(url_for("news_list"))
         item = News.query.get_or_404(news_id)
         return render_template("news_detail.html", item=item)
 
     @app.route("/schedule")
     def schedule_page():
-        schedule = Schedule.query.order_by(
-            Schedule.day_of_week.asc(), Schedule.time.asc()
-        ).all()
+        if db_enabled:
+            schedule = Schedule.query.order_by(
+                Schedule.day_of_week.asc(), Schedule.time.asc()
+            ).all()
+        else:
+            schedule = []
         return render_template(
             "schedule.html", schedule=schedule, today=datetime.utcnow().weekday()
         )
@@ -487,14 +503,15 @@ def create_app():
     def signup():
         form = SignupForm()
         if form.validate_on_submit():
-            s = Signup(
-                name=form.name.data,
-                email=form.email.data,
-                phone=form.phone.data,
-                activity=form.activity.data,
-            )
-            db.session.add(s)
-            db.session.commit()
+            if db_enabled:
+                s = Signup(
+                    name=form.name.data,
+                    email=form.email.data,
+                    phone=form.phone.data,
+                    activity=form.activity.data,
+                )
+                db.session.add(s)
+                db.session.commit()
             flash(_("Спасибо! Мы свяжемся с вами скоро."))
             return redirect(url_for("home"))
         return render_template("signup.html", form=form)
@@ -503,6 +520,9 @@ def create_app():
 
     @app.route("/login", methods=["GET", "POST"])
     def login():
+        if not db_enabled:
+            flash(_("Вход временно отключён: приложение запущено без базы данных."), "error")
+            return redirect(url_for("home"))
         if current_user.is_authenticated:
             return redirect(url_for("profile"))
 
@@ -549,6 +569,9 @@ def create_app():
 
     @app.route("/register", methods=["GET", "POST"])
     def register():
+        if not db_enabled:
+            flash(_("Регистрация временно отключена: приложение запущено без базы данных."), "error")
+            return redirect(url_for("home"))
         if current_user.is_authenticated:
             return redirect(url_for("profile"))
 
