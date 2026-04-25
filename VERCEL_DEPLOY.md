@@ -19,7 +19,7 @@ git push origin main  # или master, зависит от вашей ветки
 
 На экране **"Configure Project"** (перед деплоем) добавьте переменные:
 
-### Обязательные:
+### Обязательные:1
 - **FLASK_APP** = `app.py`
 - **SECRET_KEY** = (сгенерируйте длинный случайный ключ)
   - Пример: `your-very-long-random-secret-key-here-min-32-chars`
