@@ -51,10 +51,17 @@ from babel.messages.mofile import write_mo
 def compile_translations(app):
     trans_dir = os.path.join(app.root_path, "translations")
     if not os.path.isdir(trans_dir):
-        return
+        return trans_dir
+
+    # Vercel/serverless runtime is read-only under app.root_path, so compile to /tmp.
+    runtime_trans_dir = os.path.join("/tmp", "translations")
+    can_write_source = os.access(trans_dir, os.W_OK)
+    target_root = trans_dir if can_write_source else runtime_trans_dir
+
+    compiled_any = False
     for lang in os.listdir(trans_dir):
         po_path = os.path.join(trans_dir, lang, "LC_MESSAGES", "messages.po")
-        mo_path = os.path.join(trans_dir, lang, "LC_MESSAGES", "messages.mo")
+        mo_path = os.path.join(target_root, lang, "LC_MESSAGES", "messages.mo")
         if os.path.isfile(po_path):
             try:
                 with open(po_path, "r", encoding="utf-8") as f:
@@ -62,9 +69,14 @@ def compile_translations(app):
                 os.makedirs(os.path.dirname(mo_path), exist_ok=True)
                 with open(mo_path, "wb") as f:
                     write_mo(f, catalog)
-            except Exception:
-                # Skip locale if it fails to compile
-                pass
+                compiled_any = True
+            except Exception as exc:
+                app.logger.warning("Translation compile failed for %s: %s", lang, exc)
+
+    # Keep bundled translations as fallback if runtime compilation directory differs.
+    if compiled_any and target_root != trans_dir:
+        return f"{target_root};{trans_dir}"
+    return trans_dir
 
 
 def run_simple_migrations(app):
@@ -212,8 +224,8 @@ def create_app():
         app.config.get("SECRET_KEY") or "wiru-dev-secret-change-me",
     )
 
-    # Compile translations on startup
-    compile_translations(app)
+    # Compile translations on startup and point Babel to compiled directory.
+    app.config["BABEL_TRANSLATION_DIRECTORIES"] = compile_translations(app)
 
     # DB (optional)
     if db_enabled:
