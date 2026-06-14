@@ -177,34 +177,25 @@ def get_static_schedule():
     """Fallback schedule for deployments without database."""
     return [
         # Monday
-        {"day_of_week": 0, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
         {"day_of_week": 0, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
-        {"day_of_week": 0, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
         {"day_of_week": 0, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
         {"day_of_week": 0, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
 
         # Tuesday
-        {"day_of_week": 1, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
         {"day_of_week": 1, "time": "17:15", "discipline": "boxing", "age": "5–7 лет", "coach": "Кирилл Сериков"},
-        {"day_of_week": 1, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
         {"day_of_week": 1, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
 
         # Wednesday
-        {"day_of_week": 2, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
         {"day_of_week": 2, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
-        {"day_of_week": 2, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
         {"day_of_week": 2, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
         {"day_of_week": 2, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
 
         # Thursday
         {"day_of_week": 3, "time": "17:15", "discipline": "boxing", "age": "5–7 лет", "coach": "Кирилл Сериков"},
-        {"day_of_week": 3, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
         {"day_of_week": 3, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
 
         # Friday
-        {"day_of_week": 4, "time": "16:00", "discipline": "mma", "age": "10–14 лет", "coach": "Сийм Пярк"},
         {"day_of_week": 4, "time": "17:00", "discipline": "boxing", "age": "8–11 лет", "coach": "Кирилл Сериков"},
-        {"day_of_week": 4, "time": "18:00", "discipline": "mma", "age": "15+ лет", "coach": "Сийм Пярк"},
         {"day_of_week": 4, "time": "18:30", "discipline": "boxing", "age": "12+ лет", "coach": "Кирилл Сериков"},
         {"day_of_week": 4, "time": "19:30", "discipline": "other", "activity": "Общеукрепляющие тренировки", "coach": ""},
 
@@ -433,13 +424,7 @@ def create_app():
                 "bio": _("Тренер по тайскому боксу, многократная призёрка и чемпионка международных турниров по тайскому боксу и кикбоксингу K-1, номер один в мировом рейтинге WAKO (60 kg / K-1)."),
                 "photo": "/static/images/karolinavoronova.jpg",
             },
-            {
-                "name": "Сийм Пярк",
-                "slug": "park",
-                "bio": "Сийм Пярк ведёт тренировки по греко-римской борьбе и ММА. За его плечами более десяти лет занятий в клубе «Kalev», опыт работы в Школе смешанных единоборств и тренировки в известных ирландских клубах, включая «Straight Blast Gym» в Дублине, где в своё время занимался Конор Макгрегор.\n\n+372 5335 9985",
-                "photo": "/static/images/siimpark.png",
-            },
-        ]
+                    ]
         return render_template(
             "trainers.html",
             trainers=trainers,
@@ -795,7 +780,7 @@ def create_app():
     @app.route("/admin/coaches")
     @admin_required
     def admin_coaches_list():
-        return jsonify(["Кирилл Сериков", "Сийм Пярк"])
+        return jsonify(["Кирилл Сериков"])
 
     @app.route("/admin/schedule/item", methods=["POST"])
     @admin_required

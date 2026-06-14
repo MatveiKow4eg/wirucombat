@@ -22,9 +22,6 @@ msgstr "Schedule"
 msgid "Кирилл Сериков"
 msgstr "Kirill Serikov"
 
-msgid "Сийм Пярк"
-msgstr "Siim Pärk"
-
 msgid "Тренеры"
 msgstr "Trainers"
 
@@ -765,8 +762,8 @@ msgstr "to"
 msgid "Раскрой свой потенциал в нашей Академии единоборств.<br>Подними свой уровень и стань сильнее с нами."
 msgstr "Unleash your potential at our Combat Academy.<br>Level up and get stronger with us."
 
-msgid "В Ида-Вирумаа появился новый спортивный центр — WIRU COMBAT ACADEMY, основанный Сирвеном Авакяном, Сиймом Нейссааром и Сиймом Пярком. Всего за три месяца их идея превратилась в реальность: двери клуба открылись для бокса, борьбы, ММА и функциональных тренировок. Сегодня это один из самых больших залов в Эстонии и крупнейший зал единоборств в Ида-Вирумаа."
-msgstr "A new sports center has opened in Ida-Virumaa — WIRU COMBAT ACADEMY, founded by Sirven Avakyan, Siim Neissaar and Siim Pärk. In just three months, their idea became reality: the club opened its doors for boxing, wrestling, MMA and functional training. Today it is one of the largest gyms in Estonia and the largest martial arts venue in Ida-Virumaa."
+msgid "В Ида-Вирумаа появился новый спортивный центр — WIRU COMBAT ACADEMY, основанный Сирвеном Авакяном, Сиймом Нейссааром. Всего за три месяца их идея превратилась в реальность: двери клуба открылись для бокса, борьбы, ММА и функциональных тренировок. Сегодня это один из самых больших залов в Эстонии и крупнейший зал единоборств в Ида-Вирумаа."
+msgstr "A new sports center has opened in Ida-Virumaa — WIRU COMBAT ACADEMY, founded by Sirven Avakyan and Siim Neissaar. In just three months, their idea became reality: the club opened its doors for boxing, wrestling, MMA and functional training. Today it is one of the largest gyms in Estonia and the largest martial arts venue in Ida-Virumaa."
 
 msgid "Академия объединяет сильную команду тренеров во главе с чемпионом Эстонии Кириллом Сериковым и стала современной площадкой, где каждый может развиваться, укреплять здоровье и воспитывать уверенность, дисциплину и командный дух."
 msgstr "The Academy brings together a strong team of coaches led by Estonian champion Kirill Serikov and has become a modern venue where everyone can develop, improve health, and foster confidence, discipline and team spirit."
